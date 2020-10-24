@@ -1,15 +1,18 @@
 <template>
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <YouTubeWidget />
+  <TwitchWidget />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import TwitchWidget from "./components/TwitchWidget.vue";
+import YouTubeWidget from "./components/YouTubeWidget.vue";
 
 export default defineComponent({
   name: "App",
   components: {
-    HelloWorld,
+    TwitchWidget,
+    YouTubeWidget,
   },
 });
 </script>
