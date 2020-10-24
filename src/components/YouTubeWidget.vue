@@ -22,22 +22,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
-class StreamStatsData {
-  constructor(
-    // eslint-disable-next-line no-unused-vars
-    public youtube_viewers: number,
-    // eslint-disable-next-line no-unused-vars
-    public youtube_followers: number,
-    // eslint-disable-next-line no-unused-vars
-    public youtube_latest_follower: string
-  ) {}
-}
+import * as types from "../lib/types";
 
 export default defineComponent({
   name: "YouTubeWidget",
   data() {
-    return { youtube_stats: new StreamStatsData(0, 0, "") };
+    return { youtube_stats: new types.YouTubeStatsData(0, 0, "") };
   },
   mounted() {
     this.$socket.addEventListener("open", function (event: Event) {
@@ -46,7 +36,10 @@ export default defineComponent({
     // Listen for messages
     this.$socket.addEventListener("message", (event: MessageEvent) => {
       console.log(`YouTube Listener - Message from server {${event.data}}`);
-      this.$data.youtube_stats = JSON.parse(event.data) as StreamStatsData;
+      let message = JSON.parse(event.data) as types.AllMessages;
+      if ("youtube_viewers" in message) {
+        this.$data.youtube_stats = message;
+      }
     });
     this.$socket.addEventListener("error", function (ev: Event) {
       console.error(`Problem with socket ${ev}`);
@@ -59,7 +52,7 @@ export default defineComponent({
 <style scoped>
 .youtube-container {
   position: absolute;
-  top: 10px;
+  top: 260px;
   right: 10px;
   background-color: #f49819;
   /*border: 3px solid red;*/
